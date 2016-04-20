@@ -35,6 +35,11 @@ class TestPatch(unittest.TestCase):
                 raise self.failureException(message)
         self.addTypeEqualityFunc(np.ndarray, compare_numpy_ndarrays)
 
+    def test_patch_has_positive_dimension(self):
+        """A patch needs to have at least one dimension."""
+        with self.assertRaises(AssertionError):
+            Patch((), (), ())
+
     def test_patch_dimensions_are_consistent(self):
         """When constructing a Patch the input dimensions must be consistent."""
         with self.assertRaises(AssertionError):

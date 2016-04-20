@@ -46,6 +46,7 @@ class Patch():
         """
         self.dim = len(shape)
         self.size = np.prod(shape)
+        assert self.dim > 0, "cannot construct a patch of dimension 0"
         assert self.dim == len(spacing) and self.dim == len(first_point), \
             "cannot construct a patch with arguments of inconsistent " \
             "dimensions ({}, {}, and {} are not all equal)"\
