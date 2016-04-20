@@ -15,7 +15,7 @@
 """Contains grid information.
 
 Public classes:
- - Patch
+    Patch
 """
 
 __all__ = ['Patch']
@@ -25,17 +25,22 @@ class Patch():
     """Represents a patch: a uniform grid section.
 
     Public methods:
-    __init__
+        __init__
+
+    Public attributes:
+        dim - Number of dimensions of the patch.
+        num_points - Number of points along each dimension in the patch.
+        spacings - Spacing between points along each dimension.
+        first_point - Location of the point with the lowest coordinate values.
     """
 
     def __init__(self, num_points, spacings, first_point):
         """Construct a Patch given numbers of points and grid spacings.
 
-        Arguments:
-            num_points - Number of points in the patch, along each dimension.
-            spacings - Spacing between points, along each dimension.
-            first_point - Coordinates of the first point (the corner of the
-                patch with the lowest coordinate in each dimension).
+        Arguments (see class docstring for details):
+            num_points
+            spacings
+            first_point
         """
         self.dim = len(num_points)
         assert self.dim == len(spacings) and self.dim == len(first_point), \
