@@ -69,23 +69,18 @@ class Patch():
                [ 0.,  1.,  2.,  0.,  1.,  2.]])
         """
         coords = np.empty((self.dim, self.size))
-        # Inner and outer "repetitions" of a coordinate value in the output
-        # array.
-        inner_reps = self.size
-        outer_reps = 1
+        # Number of times a coordinate appears "in a row", and the number of
+        # times we cycle through the coordinates.
+        rep_num = self.size
+        tile_num = 1
         for i in range(self.dim):
-            # The number of inner repetitions for the previous coordinate is the
-            # period of this coordinate's outer repetition.
-            period = inner_reps
-            inner_reps //= self.shape[i]
-            # The actual coordinate value.
-            coord_value = self.first_point[i]
-            for j in range(self.shape[i]):
-                coords[i,j*inner_reps:(j+1)*inner_reps] = coord_value
-                coord_value += self.spacing[i]
-            # Now that we have the first period done, copy this value outer_reps
-            # times.
-            for j in range(1, outer_reps):
-                coords[i,j*period:(j+1)*period] = coords[i,0:period]
-            outer_reps *= self.shape[i]
+            rep_num //= self.shape[i]
+            # The actual coordinate values, uniformly spaced points.
+            coord_values = np.linspace(
+                self.first_point[i],
+                self.first_point[i] + (self.shape[i]-1)*self.spacing[i],
+                self.shape[i],
+            )
+            coords[i,:] = np.tile(np.repeat(coord_values, rep_num), tile_num)
+            tile_num *= self.shape[i]
         return coords
