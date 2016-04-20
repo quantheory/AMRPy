@@ -63,8 +63,10 @@ class Patch():
         this function returns a single two-dimensional array.
 
         As an example:
+
         >>> Patch((2, 3), (1., 1.), (0., 0.)).coordinates()
-        numpy.array([[1, 1, 1, 2, 2, 2], [1, 2, 3, 1, 2, 3]])
+        array([[ 0.,  0.,  0.,  1.,  1.,  1.],
+               [ 0.,  1.,  2.,  0.,  1.,  2.]])
         """
         coords = np.empty((self.dim, self.size))
         # Inner and outer "repetitions" of a coordinate value in the output
