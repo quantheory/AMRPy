@@ -15,16 +15,16 @@
 """Contains grid information.
 
 Public classes:
-    Patch
+    PatchGrid
 """
 
-__all__ = ['Patch']
+__all__ = ['PatchGrid']
 
 import numpy as np
 
-class Patch():
+class PatchGrid():
 
-    """Represents a patch: a uniform grid section.
+    """Represents a uniform grid section for a patch.
 
     Public methods:
         __init__
@@ -37,7 +37,7 @@ class Patch():
     """
 
     def __init__(self, shape, spacing, first_point):
-        """Construct a Patch given numbers of points and grid spacings.
+        """Construct a PatchGrid given numbers of points and grid spacings.
 
         Arguments (see class docstring for details):
             shape
@@ -64,7 +64,7 @@ class Patch():
 
         As an example:
 
-        >>> Patch((2, 3), (1., 1.), (0., 0.)).coordinates()
+        >>> PatchGrid((2, 3), (1., 1.), (0., 0.)).coordinates()
         array([[ 0.,  0.,  0.,  1.,  1.,  1.],
                [ 0.,  1.,  2.,  0.,  1.,  2.]])
         """

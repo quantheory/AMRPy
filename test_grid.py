@@ -20,9 +20,9 @@ import numpy as np
 
 from grid import *
 
-class TestPatch(unittest.TestCase):
+class TestPatchGrid(unittest.TestCase):
 
-    """Tests for the Patch class."""
+    """Tests for the PatchGrid class."""
 
     def setUp(self):
         """Registers a function to compare numpy ndarrays."""
@@ -35,22 +35,22 @@ class TestPatch(unittest.TestCase):
                 raise self.failureException(message)
         self.addTypeEqualityFunc(np.ndarray, compare_numpy_ndarrays)
 
-    def test_patch_has_positive_dimension(self):
-        """A patch needs to have at least one dimension."""
+    def test_patch_grid_has_positive_dimension(self):
+        """A PatchGrid needs to have at least one dimension."""
         with self.assertRaises(AssertionError):
-            Patch((), (), ())
+            PatchGrid((), (), ())
 
-    def test_patch_dimensions_are_consistent(self):
-        """When constructing a Patch the input dimensions must be consistent."""
+    def test_patch_grid_dimensions_are_consistent(self):
+        """To construct a PatchGrid, consistent dimensions must be used."""
         with self.assertRaises(AssertionError):
-            Patch((1,), (1., 2.), (1., 2.))
+            PatchGrid((1,), (1., 2.), (1., 2.))
         with self.assertRaises(AssertionError):
-            Patch((1, 2), (1., 2.), (1.,))
+            PatchGrid((1, 2), (1., 2.), (1.,))
 
-    def test_patch_coordinates_contain_grid_coordinates(self):
-        """Patch.coordinates should return an array of grid coordinates."""
-        patch = Patch((2, 2, 3), (3., 1., 2.), (2., 3., 5.))
+    def test_patch_grid_coordinates_returns_coordinates(self):
+        """PatchGrid.coordinates should return the grid's coordinates."""
+        patch_grid = PatchGrid((2, 2, 3), (3., 1., 2.), (2., 3., 5.))
         expected = np.array([[2., 2., 2., 2., 2., 2., 5., 5., 5., 5., 5., 5.],
                              [3., 3., 3., 4., 4., 4., 3., 3., 3., 4., 4., 4.],
                              [5., 7., 9., 5., 7., 9., 5., 7., 9., 5., 7., 9.]])
-        self.assertEqual(patch.coordinates(), expected)
+        self.assertEqual(patch_grid.coordinates(), expected)
