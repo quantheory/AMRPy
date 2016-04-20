@@ -20,6 +20,8 @@ Public classes:
 
 __all__ = ['Patch']
 
+import numpy as np
+
 class Patch():
 
     """Represents a patch: a uniform grid section.
@@ -43,6 +45,7 @@ class Patch():
             first_point
         """
         self.dim = len(num_points)
+        self.size = np.prod(num_points)
         assert self.dim == len(spacings) and self.dim == len(first_point), \
             "cannot construct a patch with arguments of inconsistent " \
             "dimensions ({}, {}, and {} are not all equal)"\
@@ -50,3 +53,36 @@ class Patch():
         self.num_points = num_points
         self.spacings = spacings
         self.first_point = first_point
+
+    def coordinates(self):
+        """Return the coordinates of all grid points.
+
+        The output of this function is broadly similar to the output of
+        numpy.meshgrid, except that instead of returning a series of vectors,
+        this function returns a single two-dimensional array.
+
+        As an example:
+        >>> Patch((2, 3), (1., 1.), (0., 0.)).coordinates()
+        numpy.array([[1, 1, 1, 2, 2, 2], [1, 2, 3, 1, 2, 3]])
+        """
+        coords = np.empty((self.dim, self.size))
+        # Inner and outer "repetitions" of a coordinate value in the output
+        # array.
+        inner_reps = self.size
+        outer_reps = 1
+        for i in range(self.dim):
+            # The number of inner repetitions for the previous coordinate is the
+            # period of this coordinate's outer repetition.
+            period = inner_reps
+            inner_reps //= self.num_points[i]
+            # The actual coordinate value.
+            coord_value = self.first_point[i]
+            for j in range(self.num_points[i]):
+                coords[i,j*inner_reps:(j+1)*inner_reps] = coord_value
+                coord_value += self.spacings[i]
+            # Now that we have the first period done, copy this value outer_reps
+            # times.
+            for j in range(1, outer_reps):
+                coords[i,j*period:(j+1)*period] = coords[i,0:period]
+            outer_reps *= self.num_points[i]
+        return coords
