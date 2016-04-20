@@ -31,27 +31,27 @@ class Patch():
 
     Public attributes:
         dim - Number of dimensions of the patch.
-        num_points - Number of points along each dimension in the patch.
-        spacings - Spacing between points along each dimension.
+        shape - Number of points along each dimension in the patch.
+        spacing - Spacing between points along each dimension.
         first_point - Location of the point with the lowest coordinate values.
     """
 
-    def __init__(self, num_points, spacings, first_point):
+    def __init__(self, shape, spacing, first_point):
         """Construct a Patch given numbers of points and grid spacings.
 
         Arguments (see class docstring for details):
-            num_points
-            spacings
+            shape
+            spacing
             first_point
         """
-        self.dim = len(num_points)
-        self.size = np.prod(num_points)
-        assert self.dim == len(spacings) and self.dim == len(first_point), \
+        self.dim = len(shape)
+        self.size = np.prod(shape)
+        assert self.dim == len(spacing) and self.dim == len(first_point), \
             "cannot construct a patch with arguments of inconsistent " \
             "dimensions ({}, {}, and {} are not all equal)"\
-                .format(self.dim, len(spacings), len(first_point))
-        self.num_points = num_points
-        self.spacings = spacings
+                .format(self.dim, len(spacing), len(first_point))
+        self.shape = shape
+        self.spacing = spacing
         self.first_point = first_point
 
     def coordinates(self):
@@ -74,15 +74,15 @@ class Patch():
             # The number of inner repetitions for the previous coordinate is the
             # period of this coordinate's outer repetition.
             period = inner_reps
-            inner_reps //= self.num_points[i]
+            inner_reps //= self.shape[i]
             # The actual coordinate value.
             coord_value = self.first_point[i]
-            for j in range(self.num_points[i]):
+            for j in range(self.shape[i]):
                 coords[i,j*inner_reps:(j+1)*inner_reps] = coord_value
-                coord_value += self.spacings[i]
+                coord_value += self.spacing[i]
             # Now that we have the first period done, copy this value outer_reps
             # times.
             for j in range(1, outer_reps):
                 coords[i,j*period:(j+1)*period] = coords[i,0:period]
-            outer_reps *= self.num_points[i]
+            outer_reps *= self.shape[i]
         return coords
