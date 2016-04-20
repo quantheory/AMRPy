@@ -28,15 +28,20 @@ class Patch():
     __init__
     """
 
-    def __init__(self, num_points, spacings):
+    def __init__(self, num_points, spacings, first_point):
         """Construct a Patch given numbers of points and grid spacings.
 
         Arguments:
             num_points - Number of points in the patch, along each dimension.
             spacings - Spacing between points, along each dimension.
+            first_point - Coordinates of the first point (the corner of the
+                patch with the lowest coordinate in each dimension).
         """
-        assert len(num_points) == len(spacings), \
-            "cannot construct a patch with num_points and spacings of " \
-            "different length ({} != {})".format(len(num_points), len(spacings))
+        self.dim = len(num_points)
+        assert self.dim == len(spacings) and self.dim == len(first_point), \
+            "cannot construct a patch with arguments of inconsistent " \
+            "dimensions ({}, {}, and {} are not all equal)"\
+                .format(self.dim, len(spacings), len(first_point))
         self.num_points = num_points
         self.spacings = spacings
+        self.first_point = first_point

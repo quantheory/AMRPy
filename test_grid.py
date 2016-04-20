@@ -25,4 +25,6 @@ class TestPatch(unittest.TestCase):
     def test_patch_dimensions_are_consistent(self):
         """When constructing a Patch the input dimensions must be consistent."""
         with self.assertRaises(AssertionError):
-            Patch((1,), (1., 2.))
+            Patch((1,), (1., 2.), (1., 2.))
+        with self.assertRaises(AssertionError):
+            Patch((1, 2), (1., 2.), (1.,))
